@@ -1,5 +1,6 @@
 "use client";
 import { LucideIcon } from "lucide-react";
+import { MoveRight } from "lucide-react";
 import { motion } from "framer-motion";
 // Importing LucideIcon type for type safety
 type MenuItemProps = {
@@ -10,6 +11,11 @@ const menuItemVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
   exit: { opacity: 0, y: -20 },
+};
+const menuArrowVariants = {
+  hidden: { opacity: 0, x: 10 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -10 },
 };
 
 // MenuItem component that renders a single menu item with an icon and label
@@ -24,6 +30,13 @@ export default function MenuItem({ icon: Icon, label }: MenuItemProps) {
     >
       <Icon size={22} />
       {label}
+      <motion.div
+        variants={menuArrowVariants}
+        initial="initial"
+        className="ml-auto"
+      >
+        <MoveRight size={22} />
+      </motion.div>
     </motion.li>
   );
 }
