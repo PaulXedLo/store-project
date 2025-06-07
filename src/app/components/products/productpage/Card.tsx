@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Product } from "@/app/types/Products";
-export default function ProductCard({ product }: { product: Product[] }) {
+export default function ProductCard({ product }: { product: Product }) {
   const [expandedDesc, setExpandedDesc] = useState(false);
   const maxLength = 120;
   const shortDescription =
@@ -35,8 +35,8 @@ export default function ProductCard({ product }: { product: Product[] }) {
         </p>
       </div>
 
-      <div className="flex items-center justify-center gap-8 w-full mt-6">
-        <p className="text-1xl font-bold text-gray-900 dark:text-gray-100 mt-4">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-8 w-full mt-6">
+        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-4">
           ${product.price.toFixed(2)}
         </p>
         <div className="flex items-center gap-2">
