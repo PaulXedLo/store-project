@@ -1,7 +1,9 @@
+import SearchInput from "../search/Search";
+
 export default function ProductViewOptions() {
   return (
     <div className="flex flex-col gap-2 items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md">
-      <div className="flex items-center justify-around  w-full">
+      <div className="flex items-center justify-around w-full">
         <div className="flex flex-col items-center">
           <label className="text-sm text-gray-600 font-bold dark:text-gray-400 mb-1">
             View:
@@ -10,6 +12,10 @@ export default function ProductViewOptions() {
             <option value="all">All</option>
             <option value="electronics">Electronics</option>
           </select>
+        </div>
+        {/* Search input for larger screens */}
+        <div className="hidden md:flex  items-center justify-center mt-4">
+          <SearchInput />
         </div>
         <div className="flex flex-col items-center">
           <label className="text-sm text-gray-600 font-bold dark:text-gray-400 mb-1">
@@ -21,6 +27,10 @@ export default function ProductViewOptions() {
             <option value="price-asc">Price: Low to High</option>
           </select>
         </div>
+      </div>
+      {/* Mobile search input */}
+      <div className="md:hidden flex items-center justify-center mt-4">
+        <SearchInput />
       </div>
     </div>
   );
