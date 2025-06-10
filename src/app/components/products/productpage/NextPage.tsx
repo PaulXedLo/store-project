@@ -1,18 +1,29 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import type { PageProps } from "@/app/types/Page";
+import { useProductStore } from "@/app/store/useProductStore";
+import { useCallback } from "react";
 const productPageVariants = {
   initial: { opacity: 0, x: -20 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
 };
-export default function NextPage({
-  products,
-  productPage,
-  showPageOptions,
-  setShowPageOptions,
-  handlePageChange,
-  productsPerPage,
-}: PageProps) {
+export default function NextPage() {
+  const {
+    productPage,
+    setProductPage,
+    showPageOptions,
+    setShowPageOptions,
+    productsPerPage,
+    products,
+  } = useProductStore();
+  // Handle page change
+  const handlePageChange = useCallback(() => {
+    if (productPage < Math.ceil(products.length / productsPerPage)) {
+      setProductPage(productPage + 1);
+    } else {
+      setProductPage(1);
+    }
+  }, [productPage, products.length, productsPerPage, setProductPage]);
+
   return (
     <motion.div
       onMouseEnter={() => setShowPageOptions(true)}

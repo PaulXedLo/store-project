@@ -32,7 +32,7 @@ export default function Hero() {
           variants={heroHeaderVariants}
           initial="hidden"
           animate="visible"
-          className="text-4xl mb-6 z-10 font-bold text-center "
+          className="text-3xl md:text-4xl font-semibold z-10 text-center "
         >
           Welcome
         </motion.h1>

@@ -1,13 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 import { SyncLoader } from "react-spinners";
-import { useEffect, useState } from "react";
-import type { Product } from "@/app/types/Products";
-import ProductViewOptions from "../filter/ProductViewOptions";
+import { useEffect } from "react";
 import ProductPageTitle from "./Title";
 import ProductList from "./List";
 import ErrorPage from "./ErrorPage";
 import NextPage from "./NextPage";
+import ProductViewOptions from "../../ui/ProductViewOptions";
+import { useProductStore } from "@/app/store/useProductStore";
 
 const productInfoVariants = {
   initial: { opacity: 0, y: -20 },
@@ -15,33 +15,11 @@ const productInfoVariants = {
 };
 
 export default function ProductPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showPageOptions, setShowPageOptions] = useState(false);
-  const [productPage, setProductPage] = useState(1);
-
-  const productsPerPage = 9;
-  const paginatedProducts = products.slice(
-    (productPage - 1) * productsPerPage,
-    productPage * productsPerPage
-  );
-  // Handle page change
-  function handlePageChange() {
-    if (productPage < Math.ceil(products.length / productsPerPage)) {
-      setProductPage((prevPage) => prevPage + 1);
-    } else {
-      setProductPage(1);
-    }
-  }
-  // Fetch products from the API
+  const { products, fetchProducts, loading } = useProductStore();
+  // Fetch products on component mount
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      });
-  }, []);
+    if (products.length === 0) fetchProducts();
+  });
   return (
     <>
       {/* If no products are available, show an error page */}
@@ -55,28 +33,21 @@ export default function ProductPage() {
             animate="animate"
             className="shadow-lg  max-w-7xl mx-auto px-4 py-5"
           >
+            {/* Product page title and view options */}
             <ProductPageTitle />
             <ProductViewOptions />
           </motion.section>
           {/*Product list */}
           {loading ? (
-            <div className="flex mt-8 items-center justify-center ">
+            <div className="flex mt-20 items-center justify-center ">
               <SyncLoader color="white" size={15} />
             </div>
           ) : (
             <motion.section className="max-w-7xl mx-auto px-4 py-8">
-              {/*Product list with pagination (type of thing) */}
-              <ProductList products={paginatedProducts} />
+              {/*Product list with pagination  */}
+              <ProductList />
               {/*Next page floating buttons */}
-              <NextPage
-                setProductPage={setProductPage}
-                productPage={productPage}
-                handlePageChange={handlePageChange}
-                showPageOptions={showPageOptions}
-                setShowPageOptions={setShowPageOptions}
-                products={products}
-                productsPerPage={productsPerPage}
-              />
+              <NextPage />
             </motion.section>
           )}
         </section>

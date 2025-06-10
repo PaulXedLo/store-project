@@ -1,4 +1,4 @@
-import SearchInput from "../search/Search";
+import SearchInput from "./Search";
 
 export default function ProductViewOptions() {
   return (

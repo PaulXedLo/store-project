@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import ThemeToggle from "../common/ThemeToggle";
+import ThemeToggle from "../ui/ThemeToggle";
 import SidebarContainer from "../sidebar/SidebarContainer";
 const storeMenuVariants = {
   initial: { opacity: 0 },
@@ -74,7 +74,9 @@ export default function Header() {
         <ThemeToggle />
       </motion.nav>
       {/*Sidebar */}
-      <AnimatePresence>{sidebarOpen && <SidebarContainer />}</AnimatePresence>
+      <AnimatePresence>
+        {sidebarOpen && <SidebarContainer setSidebarOpen={setSidebarOpen} />}
+      </AnimatePresence>
     </>
   );
 }
