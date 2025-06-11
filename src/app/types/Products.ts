@@ -14,16 +14,25 @@ export type Category =
   | "women's clothing"
   | "jewelery"
   | "electronics";
+// Sort option type for sorting products
+export type SortOption =
+  | "relevance"
+  | "latest"
+  | "price - low to high"
+  | "price - high to low";
 // ProductState type representing the state of products in the store
 export type ProductState = {
   products: Product[];
   productsPerPage: number;
   showPageOptions: boolean;
   category: Category;
+  sortOption: SortOption;
+  sortBy: SortOption[];
   filterByCategory: Category[];
   productPage: number;
   loading: boolean;
   setShowPageOptions: (show: boolean) => void;
+  setSortOption: (sortOption: SortOption) => void;
   setCategory: (category: Category) => void;
   setLoading: (loading: boolean) => void;
   setProductPage: (page: number) => void;

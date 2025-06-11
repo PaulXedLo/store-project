@@ -1,47 +1,19 @@
 "use client";
 import { motion } from "framer-motion";
 import { SyncLoader } from "react-spinners";
-import { useEffect, useMemo } from "react";
 import ProductPageTitle from "./Title";
 import ProductList from "./List";
 import ErrorPage from "./ErrorPage";
 import NextPage from "./NextPage";
 import ProductViewOptions from "./FilterOptions";
-import { useProductStore } from "@/app/store/useProductStore";
-import { useSearchStore } from "@/app/store/useSearchStore";
+import { useFilteredProducts } from "@/app/hooks/useFilteredProducts";
+
 const productInfoVariants = {
   initial: { opacity: 0, y: -20 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 export default function ProductPage() {
-  // Access product store and search store
-  const { products, fetchProducts, productPage, loading, category } =
-    useProductStore();
-  const { search } = useSearchStore();
-  const productsPerPage = 9;
-  // Filtered products based on search and category
-  const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
-      const titleMatch = product.title
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const categoryMatch =
-        category === "all" ||
-        product.category.toLowerCase() === category.toLowerCase();
-      return titleMatch && categoryMatch;
-    });
-  }, [products, search, category]);
-  // Paginate products
-  const paginatedProducts = useMemo(() => {
-    return filteredProducts.slice(
-      (productPage - 1) * productsPerPage,
-      productPage * productsPerPage
-    );
-  }, [filteredProducts, productPage]);
-  // Fetch products on component mount
-  useEffect(() => {
-    if (products.length === 0) fetchProducts();
-  });
+  const { paginatedProducts, products, loading } = useFilteredProducts();
   return (
     <>
       {/* If no products are available, show an error page */}

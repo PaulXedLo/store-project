@@ -8,12 +8,19 @@ export const useProductStore = create<ProductState>()(
       // Initial state
       products: [],
       category: "all",
+      sortOption: "relevance",
       filterByCategory: [
         "all",
         "men's clothing",
         "women's clothing",
         "jewelery",
         "electronics",
+      ],
+      sortBy: [
+        "relevance",
+        "latest",
+        "price - low to high",
+        "price - high to low",
       ],
       loading: true,
       productsPerPage: 9,
@@ -24,6 +31,7 @@ export const useProductStore = create<ProductState>()(
       setShowPageOptions: (show) => set({ showPageOptions: show }),
       setLoading: (loading) => set({ loading }),
       setCategory: (category) => set({ category }),
+      setSortOption: (sortOption) => set({ sortOption }),
       // Fetch products from the API
       fetchProducts: async () => {
         set({ loading: true });
