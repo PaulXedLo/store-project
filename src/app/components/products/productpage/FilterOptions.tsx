@@ -11,7 +11,6 @@ export default function ProductViewOptions() {
     sortOption,
     setSortOption,
   } = useProductStore();
-  console.log("filterByCategory from store:", filterByCategory);
   return (
     <div className="flex flex-col gap-2 items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md">
       <div className="flex items-center justify-around w-full">

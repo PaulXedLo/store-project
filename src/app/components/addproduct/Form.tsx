@@ -1,14 +1,14 @@
 "use client";
 import { useProductStore } from "@/app/store/useProductStore";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Toaster, toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
 import { z } from "zod";
 import { useCallback } from "react";
 import FormInput from "./FormInput";
-
 // Product schema for validation
-const productSchema = z.object({
+export const productSchema = z.object({
   id: z.number(),
   title: z.string().min(2, "Title is too short").max(100, "Title is too long"),
   price: z
@@ -22,29 +22,17 @@ const productSchema = z.object({
   image: z.string().url("Image must be a valid URL"),
 });
 
+const formVariants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+type Props = {
+  form: ReturnType<typeof useForm<ProductFormData>>;
+};
 export type ProductFormData = z.infer<typeof productSchema>;
-
-export default function AddProductForm() {
+export default function AddProductForm({ form }: Props) {
   const { addProduct } = useProductStore();
-  // Initialize the form and validation
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
-    mode: "onTouched",
-    defaultValues: {
-      id: Date.now(), // Generate a unique ID for the product
-      title: "",
-      price: 0,
-      description: "",
-      category: "electronics",
-      image:
-        "https://pethelpful.com/.image/w_3840,q_auto:good,c_fill,ar_4:3/MTk2NzY3MjA5ODc0MjY5ODI2/top-10-cutest-cat-photos-of-all-time.jpg",
-    },
-  });
-  // Handle form submission
+  // Function to handle form submission
   const onSubmit = useCallback(
     (data: ProductFormData) => {
       addProduct(data);
@@ -54,14 +42,24 @@ export default function AddProductForm() {
     },
     [addProduct]
   );
+  // Destructure form methods
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
   return (
-    <section className="flex  p-7 h-auto w-full  flex-col items-center bg-gray-200 dark:bg-gray-900 text-white">
+    <section className="flex py-5 h-auto w-full  flex-col items-center text-white">
       <Toaster position="top-center" richColors />
       {/* Form for adding a new product */}
-      <form
+      <motion.form
+        variants={formVariants}
+        initial="hidden"
+        animate="visible"
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white dark:bg-gray-700 border-2 dark:border-0 border-gray-300 rounded-md shadow-md flex w-80 md:w-120 h-auto flex-col gap-2 p-4"
       >
+        {/* Hidden input for product ID */}
         <input type="hidden" value={Date.now()} {...register("id")} />
         {/* Input for product image URL */}
         <FormInput
@@ -115,7 +113,7 @@ export default function AddProductForm() {
         >
           Add Product
         </button>
-      </form>
+      </motion.form>
     </section>
   );
 }

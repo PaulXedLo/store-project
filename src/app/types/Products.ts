@@ -26,6 +26,7 @@ export type ProductState = {
   productsPerPage: number;
   showPageOptions: boolean;
   category: Category;
+  myproducts: Product[];
   sortOption: SortOption;
   sortBy: SortOption[];
   filterByCategory: Category[];

@@ -1,7 +1,7 @@
-export default function Button() {
+export default function Button({ children }: { children?: React.ReactNode }) {
   return (
-    <button className="px-9 rounded-full py-2 bg-slate-800 text-white hover:bg-slate-900 shadow-lg transition duration-200">
-      See More
+    <button className=" cursor-pointer px-9 rounded-full py-2 bg-purple-500 hover:bg-purple-600 text-white shadow-lg transition duration-200">
+      {children}
     </button>
   );
 }

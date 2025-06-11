@@ -7,6 +7,7 @@ export const useProductStore = create<ProductState>()(
     (set) => ({
       // Initial state
       products: [],
+      myproducts: [],
       category: "all",
       sortOption: "relevance",
       filterByCategory: [
@@ -57,16 +58,19 @@ export const useProductStore = create<ProductState>()(
           // If the product is successfully added, update the store
           const newProduct = await res.json();
           product = newProduct;
-
           set((state) => {
             const existingProduct = state.products.find(
               (p) => p.id === product.id
             );
+
             const updatedProducts = existingProduct
               ? state.products.map((p) => (p.id === product.id ? product : p))
               : [...state.products, product];
 
-            return { products: updatedProducts };
+            return {
+              products: updatedProducts,
+              myproducts: [...state.myproducts, product],
+            };
           });
         }
       },

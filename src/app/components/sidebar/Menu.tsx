@@ -17,10 +17,7 @@ export default function Menu({
       <Link href="/products/addproduct" onClick={() => setSidebarOpen(false)}>
         <MenuItem icon={ListItemIcon} label="Add item" />
       </Link>
-      <Link
-        href="/products/currentlylisted"
-        onClick={() => setSidebarOpen(false)}
-      >
+      <Link href="/products/myproducts" onClick={() => setSidebarOpen(false)}>
         <MenuItem icon={CurrentlyListedIcon} label="Currently listed" />
       </Link>
     </ul>

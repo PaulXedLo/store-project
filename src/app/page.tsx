@@ -3,8 +3,8 @@ import ProductPage from "./components/products/productpage";
 
 export default function Page() {
   return (
-    <div>
-      <div className="relative overflow-hidden">
+    <div className="flex w-full bg-gray-200 dark:bg-gray-900 flex-col items-center justify-between">
+      <div className="relative overflow-hidden w-full">
         <Hero />
       </div>
       <ProductPage />

@@ -16,6 +16,8 @@ export default function Hero() {
   return (
     <>
       <div className="flex gap-4 justify-center flex-col items-center h-80 bg-gray-100 dark:bg-gray-900 text-white">
+        {/* Overlay to darken the video background */}
+        <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
         <motion.video
           variants={videoVariants}
           initial="hidden"
