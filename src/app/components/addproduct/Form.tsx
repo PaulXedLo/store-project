@@ -11,16 +11,18 @@ import FormInput from "./FormInput";
 const productSchema = z.object({
   id: z.number(),
   title: z.string().min(2, "Title is too short").max(100, "Title is too long"),
-  price: z.number().positive("Price must be a positive number"),
+  price: z
+    .number({ required_error: "Please set a price" })
+    .positive("Price must be a positive number"),
   description: z
     .string()
-    .min(5)
+    .min(5, "Description must be between 5 and 500 characters")
     .max(500, "Description must be between 5 and 500 characters"),
   category: z.string(),
   image: z.string().url("Image must be a valid URL"),
 });
 
-type ProductFormData = z.infer<typeof productSchema>;
+export type ProductFormData = z.infer<typeof productSchema>;
 
 export default function AddProductForm() {
   const { addProduct } = useProductStore();
@@ -31,24 +33,34 @@ export default function AddProductForm() {
     formState: { errors },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
+    mode: "onTouched",
+    defaultValues: {
+      id: Date.now(), // Generate a unique ID for the product
+      title: "",
+      price: 0,
+      description: "",
+      category: "electronics",
+      image:
+        "https://pethelpful.com/.image/w_3840,q_auto:good,c_fill,ar_4:3/MTk2NzY3MjA5ODc0MjY5ODI2/top-10-cutest-cat-photos-of-all-time.jpg",
+    },
   });
   // Handle form submission
   const onSubmit = useCallback(
     (data: ProductFormData) => {
       addProduct(data);
       toast.success("Product added successfully!", {
-        description: `Product ID: ${data.id}, Title: ${data.title}`,
+        description: `Name: ${data.title}`,
       });
     },
     [addProduct]
   );
   return (
-    <section className="flex p-3 h-auto w-full  flex-col items-center bg-gray-100 dark:bg-gray-900 text-white">
+    <section className="flex  p-7 h-auto w-full  flex-col items-center bg-gray-200 dark:bg-gray-900 text-white">
       <Toaster position="top-center" richColors />
       {/* Form for adding a new product */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className=" border- rounded-md shadow-md flex w-80 h-auto flex-col gap-2 p-4"
+        className="bg-white dark:bg-gray-700 border-2 dark:border-0 border-gray-300 rounded-md shadow-md flex w-80 md:w-120 h-auto flex-col gap-2 p-4"
       >
         <input type="hidden" value={Date.now()} {...register("id")} />
         {/* Input for product image URL */}
@@ -65,7 +77,7 @@ export default function AddProductForm() {
           name="title"
           as="input"
           type="text"
-          label="title"
+          label="Title"
           register={register}
           error={errors.title}
         />
@@ -73,7 +85,7 @@ export default function AddProductForm() {
         <FormInput
           name="price"
           as="input"
-          label="price"
+          label="Price"
           type="number"
           register={register}
           error={errors.price}
@@ -83,7 +95,7 @@ export default function AddProductForm() {
           name="category"
           as="select"
           type="text"
-          label="category"
+          label="Category"
           register={register}
           error={errors.category}
         />
@@ -92,7 +104,7 @@ export default function AddProductForm() {
           name="description"
           type="text"
           as="textarea"
-          label="description"
+          label="Description"
           register={register}
           error={errors.description}
         />

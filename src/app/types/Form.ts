@@ -1,13 +1,5 @@
 import { UseFormRegister } from "react-hook-form";
-
-type ProductFormData = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-};
+import type { ProductFormData } from "../components/addproduct/Form";
 
 export type FormInputProps = {
   name: keyof ProductFormData;

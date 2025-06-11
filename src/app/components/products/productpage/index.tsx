@@ -1,13 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 import { SyncLoader } from "react-spinners";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ProductPageTitle from "./Title";
 import ProductList from "./List";
 import ErrorPage from "./ErrorPage";
 import NextPage from "./NextPage";
 import ProductViewOptions from "../../ui/ProductViewOptions";
 import { useProductStore } from "@/app/store/useProductStore";
+import { useSearchStore } from "@/app/store/useSearchStore";
 
 const productInfoVariants = {
   initial: { opacity: 0, y: -20 },
@@ -15,7 +16,23 @@ const productInfoVariants = {
 };
 
 export default function ProductPage() {
-  const { products, fetchProducts, loading } = useProductStore();
+  const { products, fetchProducts, productPage, loading } = useProductStore();
+  const { search } = useSearchStore();
+  const productsPerPage = 9;
+  // Filtered products based on search input
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) =>
+      product.title.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [products, search]);
+
+  // Paginate products
+  const paginatedProducts = useMemo(() => {
+    return filteredProducts.slice(
+      (productPage - 1) * productsPerPage,
+      productPage * productsPerPage
+    );
+  }, [filteredProducts, productPage]);
   // Fetch products on component mount
   useEffect(() => {
     if (products.length === 0) fetchProducts();
@@ -45,7 +62,7 @@ export default function ProductPage() {
           ) : (
             <motion.section className="max-w-7xl mx-auto px-4 py-8">
               {/*Product list with pagination  */}
-              <ProductList />
+              <ProductList paginatedProducts={paginatedProducts} />
               {/*Next page floating buttons */}
               <NextPage />
             </motion.section>

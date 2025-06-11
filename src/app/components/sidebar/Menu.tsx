@@ -1,4 +1,3 @@
-import { Archive as AllItemsIcon } from "lucide-react";
 import { Plus as ListItemIcon, Home } from "lucide-react";
 import Link from "next/link";
 import { NotebookTabs as CurrentlyListedIcon } from "lucide-react";
@@ -14,9 +13,6 @@ export default function Menu({
     <ul className=" mt-7 flex flex-col text-white dark:text-gray-500 ">
       <Link href="/" onClick={() => setSidebarOpen(false)}>
         <MenuItem icon={Home} label="Home" />
-      </Link>
-      <Link href="/allproducts" onClick={() => setSidebarOpen(false)}>
-        <MenuItem icon={AllItemsIcon} label="All items" />
       </Link>
       <Link href="/products/addproduct" onClick={() => setSidebarOpen(false)}>
         <MenuItem icon={ListItemIcon} label="Add item" />

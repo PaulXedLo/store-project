@@ -23,8 +23,36 @@ export const useProductStore = create<ProductState>()(
         set({ products: data });
         set({ loading: false });
       },
-      addProduct: (product) =>
-        set((state) => ({ products: [...state.products, product] })),
+      // Add product to the store
+      addProduct: async (product) => {
+        // Post the product to the API
+        const res = await fetch("https://fakestoreapi.com/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(product),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to add product");
+        } else {
+          // If the product is successfully added, update the store
+          const newProduct = await res.json();
+          product = newProduct;
+
+          set((state) => {
+            const existingProduct = state.products.find(
+              (p) => p.id === product.id
+            );
+            const updatedProducts = existingProduct
+              ? state.products.map((p) => (p.id === product.id ? product : p))
+              : [...state.products, product];
+
+            return { products: updatedProducts };
+          });
+        }
+      },
       removeProduct: (id) =>
         set((state) => ({
           products: state.products.filter((p) => p.id !== id),
