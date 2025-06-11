@@ -6,26 +6,31 @@ import ProductPageTitle from "./Title";
 import ProductList from "./List";
 import ErrorPage from "./ErrorPage";
 import NextPage from "./NextPage";
-import ProductViewOptions from "../../ui/ProductViewOptions";
+import ProductViewOptions from "./FilterOptions";
 import { useProductStore } from "@/app/store/useProductStore";
 import { useSearchStore } from "@/app/store/useSearchStore";
-
 const productInfoVariants = {
   initial: { opacity: 0, y: -20 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
-
 export default function ProductPage() {
-  const { products, fetchProducts, productPage, loading } = useProductStore();
+  // Access product store and search store
+  const { products, fetchProducts, productPage, loading, category } =
+    useProductStore();
   const { search } = useSearchStore();
   const productsPerPage = 9;
-  // Filtered products based on search input
+  // Filtered products based on search and category
   const filteredProducts = useMemo(() => {
-    return products.filter((product) =>
-      product.title.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [products, search]);
-
+    return products.filter((product) => {
+      const titleMatch = product.title
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const categoryMatch =
+        category === "all" ||
+        product.category.toLowerCase() === category.toLowerCase();
+      return titleMatch && categoryMatch;
+    });
+  }, [products, search, category]);
   // Paginate products
   const paginatedProducts = useMemo(() => {
     return filteredProducts.slice(

@@ -7,6 +7,14 @@ export const useProductStore = create<ProductState>()(
     (set) => ({
       // Initial state
       products: [],
+      category: "all",
+      filterByCategory: [
+        "all",
+        "men's clothing",
+        "women's clothing",
+        "jewelery",
+        "electronics",
+      ],
       loading: true,
       productsPerPage: 9,
       productPage: 1,
@@ -15,6 +23,7 @@ export const useProductStore = create<ProductState>()(
       setProductPage: (page) => set({ productPage: page }),
       setShowPageOptions: (show) => set({ showPageOptions: show }),
       setLoading: (loading) => set({ loading }),
+      setCategory: (category) => set({ category }),
       // Fetch products from the API
       fetchProducts: async () => {
         set({ loading: true });
