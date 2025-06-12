@@ -1,7 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProductStore } from "@/app/store/useProductStore";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFilteredProducts } from "@/app/hooks/useFilteredProducts";
 import { useSearchStore } from "@/app/store/useSearchStore";
 const productPageVariants = {
@@ -18,6 +18,8 @@ export default function NextPage() {
   } = useProductStore();
   const { setSearch } = useSearchStore();
   const { filteredCount } = useFilteredProducts();
+  // State to manage visibility of the next page button
+  const [visibility, setVisibility] = useState(false);
   // Handle page change
   const handlePageChange = useCallback(() => {
     const maxPage = Math.ceil(filteredCount / productsPerPage) || 1;
@@ -28,6 +30,21 @@ export default function NextPage() {
       setSearch("");
     }
   }, [productPage, filteredCount, productsPerPage, setProductPage, setSearch]);
+  // Effect to handle scroll visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setVisibility(true);
+      } else {
+        setVisibility(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  if (!visibility) return null;
   return (
     <motion.div
       onMouseEnter={() => setShowPageOptions(true)}
