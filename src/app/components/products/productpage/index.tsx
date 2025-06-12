@@ -37,7 +37,7 @@ export default function ProductPage() {
               <SyncLoader color="white" size={15} />
             </div>
           ) : (
-            <motion.section className="max-w-7xl min-w-7xl mx-auto px-4 py-8">
+            <motion.section className="max-w-7xl md:max-w-7xl mx-auto px-4 py-8">
               {/*Product list with pagination  */}
               {paginatedProducts.length > 0 ? (
                 <ProductList paginatedProducts={paginatedProducts} />

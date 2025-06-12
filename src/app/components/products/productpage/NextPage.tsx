@@ -32,7 +32,7 @@ export default function NextPage() {
     <motion.div
       onMouseEnter={() => setShowPageOptions(true)}
       onMouseLeave={() => setShowPageOptions(false)}
-      className="bg-gray-900 dark:bg-gray-600  text-xl font-bold fixed bottom-6 left-1/2 z-20 px-4 py-1 rounded-full justify-center"
+      className="bg-gray-900 dark:bg-gray-600  text-xl font-bold fixed bottom-6 md:left-1/2 left-[45%] z-20 px-4 py-1 rounded-full justify-center"
     >
       <div className="flex items-center justify-center" />
       <span className="text-white dark:text-gray-200">
