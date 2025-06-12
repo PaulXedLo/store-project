@@ -29,51 +29,54 @@ export default function MyProduct({
     },
     [removeProduct, product.title, deletedProductNotification]
   );
+
   return (
-    <>
-      <motion.li
-        key={product.id}
-        variants={productVariants}
-        initial="hidden"
-        animate="visible"
-        whileHover="onHover"
-        className="min-w-70 p-4  max-h-110 flex flex-col gap-5 shadow-md bg-white dark:bg-gray-800 rounded"
-      >
-        <div className="w-full">
-          <h2 className="text-xl text-start text-black dark:text-white  font-semibold">
-            ID: {product.id}
-          </h2>
-          {/* Product Image */}
-          <Image
-            src={product.image}
-            alt={product.title}
-            width={200}
-            height={200}
-            className="mt-2 rounded object-contain w-full h-48"
-          />
-        </div>
-        <div className="flex items-center flex-col gap-2">
-          {/* Product Title and Description */}
-          <h2 className="text-xl mt-4 text-black dark:text-white text-center font-semibold">
-            {product.title}
-          </h2>
-          <p className="max-w-80 text-gray-600 dark:text-gray-300 text-[14px] text-center">
-            {product.description}
-          </p>
-        </div>
-        <div className="flex items-center justify-between">
-          {/* Product Price and Delete Button */}
-          <p className="text-gray-600 dark:text-gray-400 text-xl font-bold">
-            ${product.price}
-          </p>
-          <span
-            onClick={() => handleRemoveProduct(product.id as number)}
-            className="cursor-pointer"
-          >
-            <Button>Delete</Button>
-          </span>
-        </div>
-      </motion.li>
-    </>
+    <motion.li
+      key={product.id}
+      variants={productVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="onHover"
+      className="w-full max-w-sm sm:max-w-md md:max-w-lg p-4 flex flex-col gap-4 shadow-md bg-white dark:bg-gray-800 rounded-lg"
+    >
+      {/* Header with ID */}
+      <h2 className="text-sm text-start text-gray-500 dark:text-gray-400 font-medium">
+        ID: {product.id}
+      </h2>
+
+      {/* Product Image */}
+      <div className="w-full flex justify-center">
+        <Image
+          src={product.image}
+          alt={product.title}
+          width={200}
+          height={200}
+          className="rounded object-contain w-full h-48 sm:h-52"
+        />
+      </div>
+
+      {/* Product Info */}
+      <div className="flex flex-col items-center gap-2 px-2">
+        <h2 className="text-lg sm:text-xl text-black dark:text-white text-center font-semibold">
+          {product.title}
+        </h2>
+        <p className="w-full text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center line-clamp-3">
+          {product.description}
+        </p>
+      </div>
+
+      {/* Footer: Price and Delete */}
+      <div className="flex items-center justify-between mt-4 px-2">
+        <p className="text-gray-700  dark:text-gray-300 text-base sm:text-lg font-bold">
+          ${product.price}
+        </p>
+        <span
+          onClick={() => handleRemoveProduct(product.id as number)}
+          className="cursor-pointer"
+        >
+          <Button>Delete</Button>
+        </span>
+      </div>
+    </motion.li>
   );
 }
