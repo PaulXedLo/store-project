@@ -29,52 +29,82 @@ It allows users to **create**, **read**, **update** (soon), and **delete** produ
 
 ```text
 📦 project-root
-├── public
-│ ├── addproductbackground.mp4
-│ ├── addproducthero.jpg
-│ └── background.mp4
-├── src
-│ └── app
-│ ├── favicon.ico
-│ ├── globals.css
-│ ├── layout.tsx
-│ ├── page.tsx
-│ ├── components
-│ │ ├── addproduct
-│ │ │ ├── Form.tsx
-│ │ │ ├── FormInput.tsx
-│ │ │ └── Hero.tsx
-│ │ ├── home
-│ │ │ └── Hero.tsx
-│ │ ├── layout
-│ │ │ └── Header.tsx
-│ │ ├── products
-│ │ │ └── productpage
-│ │ │ ├── Card.tsx
-│ │ │ ├── ErrorPage.tsx
-│ │ │ ├── index.tsx
-│ │ │ ├── List.tsx
-│ │ │ ├── NextPage.tsx
-│ │ │ └── Title.tsx
-│ │ ├── sidebar
-│ │ │ ├── Menu.tsx
-│ │ │ ├── MenuItem.tsx
-│ │ │ └── SidebarContainer.tsx
-│ │ └── ui
-│ │ ├── Button.tsx
-│ │ ├── ProductViewOptions.tsx
-│ │ ├── Search.tsx
-│ │ └── ThemeToggle.tsx
-│ ├── products
-│ │ └── addproduct
-│ │ └── page.tsx
-│ ├── store
-│ │ ├── useProductStore.ts
-│ │ └── useSearchStore.ts
-│ └── types
-│ ├── Form.ts
-│ ├── Page.ts
-│ └── Products.ts
+├───public
+│       addproductbackground.mp4
+│       addproducthero.jpg
+│       background.mp4
+│       myproductsbackground.mp4
+│       placeholder.png
+│
+└───src
+    └───app
+        │   favicon.ico
+        │   globals.css
+        │   layout.tsx
+        │   page.tsx
+        │
+        ├───components
+        │   ├───addproduct
+        │   │       Form.tsx
+        │   │       FormInput.tsx
+        │   │       ImagePreview.tsx
+        │   │
+        │   ├───home
+        │   │       Hero.tsx
+        │   │
+        │   ├───layout
+        │   │       Footer.tsx
+        │   │       Header.tsx
+        │   │
+        │   ├───myproducts
+        │   │       List.tsx
+        │   │       Product.tsx
+        │   │
+        │   ├───products
+        │   │   └───productpage
+        │   │           Card.tsx
+        │   │           ErrorPage.tsx
+        │   │           FilterOptions.tsx
+        │   │           index.tsx
+        │   │           List.tsx
+        │   │           NextPage.tsx
+        │   │           Title.tsx
+        │   │
+        │   ├───sidebar
+        │   │       Menu.tsx
+        │   │       MenuItem.tsx
+        │   │       SidebarContainer.tsx
+        │   │
+        │   └───ui
+        │           Button.tsx
+        │           Hero.tsx
+        │           Modal.tsx
+        │           NotFound.tsx
+        │           Search.tsx
+        │           ThemeToggle.tsx
+        │
+        ├───hooks
+        │       useFilteredProducts.tsx
+        │       useModal.tsx
+        │
+        ├───products
+        │   ├───addproduct
+        │   │       page.tsx
+        │   │
+        │   ├───myproducts
+        │   │       page.tsx
+        │   │
+        │   └───[slug]
+        │           page.tsx
+        │
+        ├───store
+        │       useProductStore.ts
+        │       useSearchStore.ts
+        │
+        └───types
+                Form.ts
+                Page.ts
+                Products.ts
 ```
 
 ## HOW TO RUN LOCALLY

@@ -5,7 +5,7 @@ type ModalState = {
   openModal: () => void;
   closeModal: () => void;
 };
-
+// simple modal state management using zustand for future scaling
 export const useModal = create<ModalState>((set) => ({
   isOpen: false,
   content: null,

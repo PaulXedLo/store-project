@@ -2,6 +2,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useProductStore } from "@/app/store/useProductStore";
 import { useCallback } from "react";
+import { useFilteredProducts } from "@/app/hooks/useFilteredProducts";
+import { useSearchStore } from "@/app/store/useSearchStore";
 const productPageVariants = {
   initial: { opacity: 0, x: -20 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
@@ -13,17 +15,19 @@ export default function NextPage() {
     showPageOptions,
     setShowPageOptions,
     productsPerPage,
-    products,
   } = useProductStore();
+  const { setSearch } = useSearchStore();
+  const { filteredCount } = useFilteredProducts();
   // Handle page change
   const handlePageChange = useCallback(() => {
-    if (productPage < Math.ceil(products.length / productsPerPage)) {
+    const maxPage = Math.ceil(filteredCount / productsPerPage) || 1;
+    if (productPage < maxPage) {
       setProductPage(productPage + 1);
     } else {
       setProductPage(1);
+      setSearch("");
     }
-  }, [productPage, products.length, productsPerPage, setProductPage]);
-
+  }, [productPage, filteredCount, productsPerPage, setProductPage, setSearch]);
   return (
     <motion.div
       onMouseEnter={() => setShowPageOptions(true)}
@@ -44,9 +48,10 @@ export default function NextPage() {
               exit="initial"
               className="cursor-pointer text-gray-400 ml-3 dark:text-gray-300"
             >
-              {productPage < Math.ceil(products.length / productsPerPage)
-                ? "Next"
-                : "First"}
+              {filteredCount === 0 ||
+              productPage >= Math.ceil(filteredCount / productsPerPage)
+                ? "First"
+                : "Next"}
             </motion.span>
           )}
         </AnimatePresence>

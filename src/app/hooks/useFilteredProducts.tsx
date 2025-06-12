@@ -23,10 +23,11 @@ export function useFilteredProducts() {
       const titleMatch = product.title
         .toLowerCase()
         .includes(search.toLowerCase());
+      const idMatch = String(product.id).includes(search);
       const categoryMatch =
         category === "all" ||
         product.category.toLowerCase() === category.toLowerCase();
-      return titleMatch && categoryMatch;
+      return (titleMatch || idMatch) && categoryMatch;
     });
   }, [products, search, category]);
 
@@ -59,5 +60,6 @@ export function useFilteredProducts() {
     paginatedProducts,
     products,
     loading,
+    filteredCount: filteredProducts.length,
   };
 }

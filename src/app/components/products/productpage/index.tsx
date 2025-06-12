@@ -21,7 +21,7 @@ export default function ProductPage() {
         <ErrorPage />
       ) : (
         <section className="bg-gray-200 dark:bg-gray-900 min-h-screen">
-          <motion.section
+          <motion.div
             variants={productInfoVariants}
             initial="initial"
             animate="animate"
@@ -30,16 +30,22 @@ export default function ProductPage() {
             {/* Product page title and view options */}
             <ProductPageTitle />
             <ProductViewOptions />
-          </motion.section>
+          </motion.div>
           {/*Product list */}
           {loading ? (
             <div className="flex mt-20 items-center justify-center ">
               <SyncLoader color="white" size={15} />
             </div>
           ) : (
-            <motion.section className="max-w-7xl mx-auto px-4 py-8">
+            <motion.section className="max-w-7xl min-w-7xl mx-auto px-4 py-8">
               {/*Product list with pagination  */}
-              <ProductList paginatedProducts={paginatedProducts} />
+              {paginatedProducts.length > 0 ? (
+                <ProductList paginatedProducts={paginatedProducts} />
+              ) : (
+                <div className="flex items-center justify-center text-gray-500 dark:text-gray-400">
+                  <h1 className="text-2xl mt-20">No products found</h1>
+                </div>
+              )}
               {/*Next page floating buttons */}
               <NextPage />
             </motion.section>
