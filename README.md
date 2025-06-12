@@ -3,6 +3,8 @@
 A modern **CRUD web application** built with **Next.js**, **Zustand**, and **Tailwind CSS**, showcasing clean architecture, reusable components, and responsive design.  
 It allows users to **create**, **read**, **update** (soon), and **delete** products using a public API.
 
+This project started as a small one, but as it grew I decided that it would be a great idea to further **scale** it into a full stack application. I tried to apply modern best practices while keeping in mind clean code.
+
 ✨ Features
 
 - 🔍 View, filter, and paginate products
