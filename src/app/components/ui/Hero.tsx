@@ -17,7 +17,7 @@ export default function Hero({
   sourcePath,
 }: {
   headerText: string;
-  sourcePath: string;
+  sourcePath?: string;
   paragraphText: string;
 }) {
   return (

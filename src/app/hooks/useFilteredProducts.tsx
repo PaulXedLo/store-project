@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useProductStore } from "../store/useProductStore";
 import { useSearchStore } from "../store/useSearchStore";
 // Custom hook to filter, sort, and paginate products
+const productsPerPage = 9;
 export function useFilteredProducts() {
   // Access product store and search store
   const {
@@ -13,7 +14,6 @@ export function useFilteredProducts() {
     sortOption,
   } = useProductStore();
   const { search } = useSearchStore();
-  const productsPerPage = 9;
   // Fetch products on mount
   useEffect(() => {
     if (products.length === 0) fetchProducts();
@@ -36,7 +36,9 @@ export function useFilteredProducts() {
       case "relevance":
         return filteredProducts;
       case "latest":
-        return [...filteredProducts].sort((a, b) => b.id - a.id);
+        return [...filteredProducts].sort(
+          (a, b) => Number(b.id) - Number(a.id)
+        );
       case "price - low to high":
         return [...filteredProducts].sort((a, b) => a.price - b.price);
       case "price - high to low":

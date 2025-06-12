@@ -13,6 +13,7 @@ export default function FormInput({
     <label className="text-l dark:text-white font-semibold mb-4 text-black">
       {label !== "productid" ? label : ""}
       {as === "input" && (
+        // Input field for text or number
         <input
           type={type}
           placeholder={label}
@@ -28,6 +29,7 @@ export default function FormInput({
         />
       )}
       {as === "textarea" && (
+        // Textarea field for multi-line input
         <textarea
           placeholder={label}
           rows={4}
@@ -36,6 +38,7 @@ export default function FormInput({
         />
       )}
       {as === "select" && (
+        // Select dropdown for category selection
         <select
           className="border-b-3 focus:border-b-purple-300 outline-0  border-gray-300 rounded p-2 w-full"
           {...register(name)}

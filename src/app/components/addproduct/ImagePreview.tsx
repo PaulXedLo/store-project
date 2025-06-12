@@ -10,6 +10,7 @@ const previewImageVariants = {
   initial: { opacity: 0, scale: 0.95 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
 };
+// ImagePreview component to display a preview of the uploaded image
 export default function ImagePreview({ image }: { image: string }) {
   const [isLoaded, setIsLoaded] = useState(true);
   useEffect(() => {
