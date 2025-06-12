@@ -9,7 +9,7 @@ import { useCallback } from "react";
 import FormInput from "./FormInput";
 // Product schema for validation
 export const productSchema = z.object({
-  id: z.number().optional(),
+  id: z.number(),
   title: z.string().min(2, "Title is too short").max(100, "Title is too long"),
   price: z
     .number({ required_error: "Please set a price" })
