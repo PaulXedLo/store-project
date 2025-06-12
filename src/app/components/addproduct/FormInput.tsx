@@ -11,7 +11,7 @@ export default function FormInput({
   const categoryOptions = ["electronics", "clothing", "accessories"];
   return (
     <label className="text-l dark:text-white font-semibold mb-4 text-black">
-      {label}
+      {label !== "productid" ? label : ""}
       {as === "input" && (
         <input
           type={type}

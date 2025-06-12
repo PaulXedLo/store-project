@@ -1,6 +1,6 @@
 // Product type representing a product in the store
 export type Product = {
-  id: number;
+  id?: number;
   title: string;
   price: number;
   description: string;

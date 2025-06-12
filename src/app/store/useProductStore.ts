@@ -43,41 +43,43 @@ export const useProductStore = create<ProductState>()(
       },
       // Add product to the store
       addProduct: async (product) => {
-        // Post the product to the API
-        const res = await fetch("https://fakestoreapi.com/products", {
+        // Generate a new ID for the product
+        const newId = Date.now();
+        const newProduct = { ...product, id: newId };
+        // Post the new product to the API (this is a mock API, so it won't actually save the product)
+        await fetch("https://fakestoreapi.com/products", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(product),
+          body: JSON.stringify(newProduct),
         });
-
-        if (!res.ok) {
-          throw new Error("Failed to add product");
-        } else {
-          // If the product is successfully added, update the store
-          const newProduct = await res.json();
-          product = newProduct;
-          set((state) => {
-            const existingProduct = state.products.find(
-              (p) => p.id === product.id
-            );
-
-            const updatedProducts = existingProduct
-              ? state.products.map((p) => (p.id === product.id ? product : p))
-              : [...state.products, product];
-
-            return {
-              products: updatedProducts,
-              myproducts: [...state.myproducts, product],
-            };
-          });
-        }
-      },
-      removeProduct: (id) =>
+        // Update the store with the new product
         set((state) => ({
-          products: state.products.filter((p) => p.id !== id),
-        })),
+          products: [...state.products, newProduct],
+          myproducts: [...state.myproducts, newProduct],
+        }));
+      },
+      removeProduct: async (id) =>
+        // Delete from API
+        fetch(`https://fakestoreapi.com/products/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error("Failed to delete product");
+            }
+            // If the product is successfully deleted, update the store
+            set((state) => ({
+              products: state.products.filter((product) => product.id !== id),
+              myproducts: state.myproducts.filter(
+                (product) => product.id !== id
+              ),
+            }));
+          })
+          .catch((error) => {
+            console.error("Error deleting product:", error);
+          }),
     }),
     {
       name: "product-store",

@@ -1,7 +1,10 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Product } from "@/app/types/Products";
+import Modal from "../../ui/Modal";
+import { useModal } from "@/app/hooks/useModal";
 export default function ProductCard({ product }: { product: Product }) {
+  const { isOpen, openModal } = useModal();
   const [expandedDesc, setExpandedDesc] = useState(false);
   const maxLength = 120;
   const shortDescription =
@@ -10,7 +13,10 @@ export default function ProductCard({ product }: { product: Product }) {
       : product.description;
   return (
     <div className="w-full flex flex-col items-center justify-between sm:w-100 h-auto bg-white dark:bg-gray-800 p-10 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+      {/* Mock modal */}
+      {isOpen ? <Modal /> : null}
       <div className="w-full h-64 relative mb-4">
+        {/* Product image */}
         <Image
           src={product.image}
           alt={product.title}
@@ -18,11 +24,13 @@ export default function ProductCard({ product }: { product: Product }) {
           fill
         />
       </div>
+      {/* Product title */}
       <h2 className="text-xl text-center font-semibold mt-4 text-gray-800 dark:text-white">
         {product.title}
       </h2>
       <div className="overflow-y-auto max-h-32">
         <p className="text-slate-800 dark:text-gray-500 mt-2 text-center">
+          {/* Short description with read more functionality */}
           {shortDescription}
           {product.description.length > maxLength && (
             <button
@@ -36,14 +44,22 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-8 w-full mt-6">
+        {/* Product price */}
         <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-4">
           ${product.price.toFixed(2)}
         </p>
         <div className="flex items-center gap-2">
-          <button className="mt-3 cursor-pointer px-6 py-2 shadow-xl rounded-md hover:bg-purple-600  bg-purple-500 text-white ">
+          {/* Purchase & Details buttons */}
+          <button
+            onClick={openModal}
+            className="mt-3 cursor-pointer px-6 py-2 shadow-xl rounded-md hover:bg-purple-600  bg-purple-500 text-white "
+          >
             Purchase
           </button>
-          <button className="mt-3 cursor-pointer px-6 py-2 shadow-xl rounded-md hover:bg-gray-600  bg-gray-500 text-white ">
+          <button
+            onClick={openModal}
+            className="mt-3 cursor-pointer px-6 py-2 shadow-xl rounded-md hover:bg-gray-600  bg-gray-500 text-white "
+          >
             Details
           </button>
         </div>

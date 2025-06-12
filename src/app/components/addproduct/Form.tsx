@@ -9,7 +9,7 @@ import { useCallback } from "react";
 import FormInput from "./FormInput";
 // Product schema for validation
 export const productSchema = z.object({
-  id: z.number(),
+  id: z.number().optional(),
   title: z.string().min(2, "Title is too short").max(100, "Title is too long"),
   price: z
     .number({ required_error: "Please set a price" })
@@ -21,7 +21,6 @@ export const productSchema = z.object({
   category: z.string(),
   image: z.string().url("Image must be a valid URL"),
 });
-
 const formVariants = {
   hidden: { opacity: 0, y: -20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -37,10 +36,28 @@ export default function AddProductForm({ form }: Props) {
     (data: ProductFormData) => {
       addProduct(data);
       toast.success("Product added successfully!", {
-        description: `Name: ${data.title}`,
+        description: `Tap to view ${data.title} in your products.`,
+        action: {
+          label: "View Products",
+          onClick: () => {
+            window.location.href = "/products/myproducts";
+          },
+        },
+        style: {
+          width: "400px",
+        },
+      });
+      // Reset the form after successful submission
+      form.reset({
+        title: "",
+        price: 0,
+        description: "",
+        category: "electronics",
+        image:
+          "https://pethelpful.com/.image/w_3840,q_auto:good,c_fill,ar_4:3/MTk2NzY3MjA5ODc0MjY5ODI2/top-10-cutest-cat-photos-of-all-time.jpg",
       });
     },
-    [addProduct]
+    [addProduct, form]
   );
   // Destructure form methods
   const {
@@ -49,7 +66,7 @@ export default function AddProductForm({ form }: Props) {
     formState: { errors },
   } = form;
   return (
-    <section className="flex py-5 h-auto w-full  flex-col items-center text-white">
+    <section className="flex py-5 h-auto w-full items-center text-white">
       <Toaster position="top-center" richColors />
       {/* Form for adding a new product */}
       <motion.form
@@ -59,8 +76,6 @@ export default function AddProductForm({ form }: Props) {
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white dark:bg-gray-700 border-2 dark:border-0 border-gray-300 rounded-md shadow-md flex w-80 md:w-120 h-auto flex-col gap-2 p-4"
       >
-        {/* Hidden input for product ID */}
-        <input type="hidden" value={Date.now()} {...register("id")} />
         {/* Input for product image URL */}
         <FormInput
           name="image"
