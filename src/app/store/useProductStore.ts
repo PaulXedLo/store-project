@@ -36,57 +36,76 @@ export const useProductStore = create<ProductState>()(
       // Fetch products from the API
       fetchProducts: async () => {
         set({ loading: true });
-        const res = await fetch("https://fakestoreapi.com/products");
-        if (!res.ok) {
+        try {
+          const response = await fetch("https://fakestoreapi.com/products");
+          if (!response.ok) {
+            throw new Error("Failed to fetch products");
+          }
+          const data = await response.json();
+          set({
+            products: data,
+            loading: false,
+          });
+          // HANDLE error
+        } catch (error) {
+          console.error("Error fetching products:", error);
+          set({ loading: false });
           throw new Error("Failed to fetch products");
         }
-        const data = await res.json();
-        set({ products: data });
-        set({ loading: false });
       },
       // Add product to the store
       addProduct: async (product) => {
         // Generate a new ID for the product
-        const newId = Date.now();
-        const newProduct = { ...product, id: newId };
-        // Post the new product to the API (this is a mock API, so it won't actually save the product)
-        await fetch("https://fakestoreapi.com/products", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newProduct),
-        }).catch((error) => {
-          console.error("Error adding product:", error);
+        try {
+          const newId = Date.now();
+          const newProduct = { ...product, id: newId };
+          // Post the new product to the API (this is a mock API, so it won't actually save the product)
+          const response = await fetch("https://fakestoreapi.com/products", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newProduct),
+          });
+          if (!response.ok) {
+            throw new Error("Failed to add product");
+          }
+          set((state) => ({
+            products: [...state.products, newProduct],
+            myproducts: [...state.myproducts, newProduct],
+          }));
+          // handle error
+        } catch (error) {
+          console.error("Error in addProduct:", error);
           throw new Error("Failed to add product");
-        });
-        // Update the store with the new product
-        set((state) => ({
-          products: [...state.products, newProduct],
-          myproducts: [...state.myproducts, newProduct],
-        }));
+        }
       },
-      removeProduct: async (id) =>
+      removeProduct: async (id) => {
         // Delete from API
-        fetch(`https://fakestoreapi.com/products/${id}`, {
-          method: "DELETE",
-        })
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error("Failed to delete product");
+        try {
+          const response = await fetch(
+            `https://fakestoreapi.com/products/${id}`,
+            {
+              method: "DELETE",
             }
-            // If the product is successfully deleted, update the store
-            set((state) => ({
-              products: state.products.filter((product) => product.id !== id),
-              myproducts: state.myproducts.filter(
-                (product) => product.id !== id
-              ),
-            }));
-          })
-          .catch((error) => {
-            console.error("Error deleting product:", error);
-          }),
+          );
+          if (!response.ok) {
+            console.error("Error removing product:", response.statusText);
+            throw new Error("Failed to remove product");
+          }
+          // update after deleting
+          set((state) => ({
+            products: state.products.filter((product) => product.id !== id),
+            myproducts: state.myproducts.filter((product) => product.id !== id),
+          }));
+          // handle error
+        } catch (error) {
+          console.error("Error in removeProduct:", error);
+          throw new Error("Failed to remove product");
+        }
+      },
     }),
+
     {
       name: "product-store",
     }
