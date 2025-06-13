@@ -71,6 +71,7 @@ export default function useFormHook() {
       // Reset form
 
       form.reset({
+        id: Date.now(),
         title: "",
         price: 0,
         description: "",

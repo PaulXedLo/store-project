@@ -19,6 +19,12 @@ export default function ImagePreview() {
     setIsLoaded(true);
   }, [image]);
   if (!isLoaded) return null;
+
+  // Will come back to this later to handle bug
+  // I cannot wrap my head around the fact that the image is not reactive
+  // I will go eat something and come back to this later (sleep too)
+  // If anyoen is reading this, please help me out
+  // if not, I will figure it in 1000 years or so
   return (
     <motion.div
       variants={previewContainerVariants}
@@ -45,3 +51,5 @@ export default function ImagePreview() {
     </motion.div>
   );
 }
+
+// lalallala
