@@ -1,5 +1,7 @@
 ## STORE PROJECT
 
+📚 Vezi [Decizii](/decizii.md)
+
 A modern **CRUD web application** built with **Next.js**, **Zustand**, and **Tailwind CSS**, showcasing clean architecture, reusable components, and responsive design.  
 It allows users to **create**, **read**, **update** (soon), and **delete** products using a public API.
 

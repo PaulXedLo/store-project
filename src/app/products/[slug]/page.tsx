@@ -1,7 +1,6 @@
 import React from "react";
 import UnknownProductPage from "../../components/ui/NotFound";
 type Params = Promise<{ slug: string }>;
-// This component is used to render a product page when the product is not found.
 export default async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
   return (
