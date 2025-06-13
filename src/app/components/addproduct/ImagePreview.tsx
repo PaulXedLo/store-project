@@ -2,6 +2,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import useFormHook from "@/app/hooks/useForm";
 const previewContainerVariants = {
   hidden: { opacity: 0, y: -20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -11,7 +12,8 @@ const previewImageVariants = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
 };
 // ImagePreview component to display a preview of the uploaded image
-export default function ImagePreview({ image }: { image: string }) {
+export default function ImagePreview() {
+  const { image } = useFormHook();
   const [isLoaded, setIsLoaded] = useState(true);
   useEffect(() => {
     setIsLoaded(true);

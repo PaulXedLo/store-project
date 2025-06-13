@@ -1,70 +1,17 @@
 "use client";
-import { useProductStore } from "@/app/store/useProductStore";
-
-import { Toaster, toast } from "sonner";
-import { useForm } from "react-hook-form";
+import { Toaster } from "sonner";
 import { motion } from "framer-motion";
-import { z } from "zod";
-import { useCallback } from "react";
 import FormInput from "./FormInput";
+import useFormHook from "@/app/hooks/useForm";
+
 // Product schema for validation
-export const productSchema = z.object({
-  id: z.number(),
-  title: z.string().min(2, "Title is too short").max(100, "Title is too long"),
-  price: z
-    .number({ required_error: "Please set a price" })
-    .positive("Price must be a positive number"),
-  description: z
-    .string()
-    .min(5, "Description must be between 5 and 500 characters")
-    .max(500, "Description must be between 5 and 500 characters"),
-  category: z.string(),
-  image: z.string().url("Image must be a valid URL"),
-});
 const formVariants = {
   hidden: { opacity: 0, y: -20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
-type Props = {
-  form: ReturnType<typeof useForm<ProductFormData>>;
-};
-export type ProductFormData = z.infer<typeof productSchema>;
-export default function AddProductForm({ form }: Props) {
-  const { addProduct } = useProductStore();
-  // Function to handle form submission
-  const onSubmit = useCallback(
-    (data: ProductFormData) => {
-      addProduct(data);
-      toast.success("Product added successfully!", {
-        description: `Tap to view ${data.title} in your products.`,
-        action: {
-          label: "View Products",
-          onClick: () => {
-            window.location.href = "/products/myproducts";
-          },
-        },
-        style: {
-          width: "400px",
-        },
-      });
-      // Reset the form after successful submission
-      form.reset({
-        title: "",
-        price: 0,
-        description: "",
-        category: "electronics",
-        image:
-          "https://pethelpful.com/.image/w_3840,q_auto:good,c_fill,ar_4:3/MTk2NzY3MjA5ODc0MjY5ODI2/top-10-cutest-cat-photos-of-all-time.jpg",
-      });
-    },
-    [addProduct, form]
-  );
-  // Destructure form methods
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = form;
+export default function AddProductForm() {
+  // Custom hook for form
+  const { onSubmit, register, handleSubmit, errors } = useFormHook();
   return (
     <section className="flex py-5 h-auto w-full items-center text-white">
       <Toaster position="top-center" richColors />

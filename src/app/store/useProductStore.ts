@@ -37,6 +37,9 @@ export const useProductStore = create<ProductState>()(
       fetchProducts: async () => {
         set({ loading: true });
         const res = await fetch("https://fakestoreapi.com/products");
+        if (!res.ok) {
+          throw new Error("Failed to fetch products");
+        }
         const data = await res.json();
         set({ products: data });
         set({ loading: false });
@@ -53,6 +56,9 @@ export const useProductStore = create<ProductState>()(
             "Content-Type": "application/json",
           },
           body: JSON.stringify(newProduct),
+        }).catch((error) => {
+          console.error("Error adding product:", error);
+          throw new Error("Failed to add product");
         });
         // Update the store with the new product
         set((state) => ({

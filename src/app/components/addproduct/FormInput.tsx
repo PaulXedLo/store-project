@@ -1,4 +1,3 @@
-//A reusable form input component for adding products, including validation error handling.
 import type { FormInputProps } from "@/app/types/Form";
 export default function FormInput({
   as,
@@ -50,7 +49,7 @@ export default function FormInput({
           ))}
         </select>
       )}
-      {/* Display error message if exists */}
+      {/* Error message */}
       {error && <span className="text-xs text-red-500">{error.message}</span>}
     </label>
   );

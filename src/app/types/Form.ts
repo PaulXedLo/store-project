@@ -1,5 +1,5 @@
 import { UseFormRegister } from "react-hook-form";
-import type { ProductFormData } from "../components/addproduct/Form";
+import type { ProductFormData } from "../hooks/useForm";
 
 export type FormInputProps = {
   name: keyof ProductFormData;
