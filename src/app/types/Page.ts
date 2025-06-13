@@ -9,3 +9,13 @@ export type PageProps = {
   handlePageChange: () => void;
   productsPerPage: number;
 };
+
+export type NextPage = {
+  visibility: boolean;
+  productPage: number;
+  showPageOptions: boolean;
+  setShowPageOptions: (value: boolean) => void;
+  handlePageChange: () => void;
+  filteredCount: number;
+  productsPerPage: number;
+};

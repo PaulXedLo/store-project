@@ -1,10 +1,5 @@
 import { create } from "zustand";
-
-type ModalState = {
-  isOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
-};
+import { ModalState } from "../types/Modal";
 // simple modal state management using zustand for future scaling
 export const useModal = create<ModalState>((set) => ({
   isOpen: false,

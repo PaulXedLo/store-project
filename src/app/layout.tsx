@@ -6,7 +6,7 @@ import Footer from "./components/layout/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Store project - Dreamlabs",
+  title: "Store project",
   description: "A simple store project built with Next.js and React",
 };
 
