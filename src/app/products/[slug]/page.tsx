@@ -5,6 +5,7 @@ export default async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
   return (
     <div className="flex-1 flex h-auto bg-gray-200 not-odd:bg-gray-200 dark:bg-gray-900  justify-center">
+      {/*I will come back here later too */}
       <UnknownProductPage slug={slug} />
     </div>
   );
