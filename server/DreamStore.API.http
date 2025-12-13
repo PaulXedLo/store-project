@@ -1,0 +1,6 @@
+@DreamStore.API_HostAddress = http://localhost:5198
+
+GET {{DreamStore.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
