@@ -1,5 +1,5 @@
 "use client";
-import { Menu } from "lucide-react";
+import { Menu, ShoppingBasket, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -71,7 +71,10 @@ export default function Header() {
           </motion.h1>
         </div>
         {/* Theme toggle button */}
-        <ThemeToggle />
+        <div className="flex gap-3 items-center">
+          <ShoppingCart className="size-7 cursor-pointer dark:text-white" />
+          <ThemeToggle/>
+        </div>
       </motion.nav>
       {/*Sidebar */}
       <AnimatePresence>

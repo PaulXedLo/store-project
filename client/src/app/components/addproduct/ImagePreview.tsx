@@ -25,6 +25,7 @@ export default function ImagePreview() {
   // I will go eat something and come back to this later (sleep too)
   // If anyoen is reading this, please help me out
   // if not, I will figure it in 1000 years or so
+  // fun fact (AS AN easter egg) it's been 1000 years for real (6  MONTHS) and i came back here just wanna fix it a bit later though
   return (
     <motion.div
       variants={previewContainerVariants}

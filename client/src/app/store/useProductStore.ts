@@ -2,10 +2,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { ProductState } from "../types/Products";
 
+const BASE_URL = "http://localhost:5198/api/products";
+
 export const useProductStore = create<ProductState>()(
   persist(
     (set) => ({
-      // Initial state
+      // State
       products: [],
       myproducts: [],
       category: "all",
@@ -27,85 +29,76 @@ export const useProductStore = create<ProductState>()(
       productsPerPage: 9,
       productPage: 1,
       showPageOptions: false,
-      // State setters
+
+      // Actions
       setProductPage: (page) => set({ productPage: page }),
       setShowPageOptions: (show) => set({ showPageOptions: show }),
       setLoading: (loading) => set({ loading }),
       setCategory: (category) => set({ category }),
       setSortOption: (sortOption) => set({ sortOption }),
-      // Fetch products from the API
+
       fetchProducts: async () => {
         set({ loading: true });
         try {
-          const response = await fetch("https://fakestoreapi.com/products");
-          if (!response.ok) {
-            throw new Error("Failed to fetch products");
-          }
+          const response = await fetch(BASE_URL);
+          if (!response.ok) throw new Error("Failed to fetch products");
+          
           const data = await response.json();
-          set({
-            products: data,
-            loading: false,
-          });
-          // HANDLE error
+          set({ products: data, loading: false });
         } catch (error) {
-          console.error("Error fetching products:", error);
+          console.error(error);
           set({ loading: false });
-          throw new Error("Failed to fetch products");
         }
       },
-      // Add product to the store
+
       addProduct: async (product) => {
-        // Generate a new ID for the product
         try {
-          const newId = Date.now();
-          const newProduct = { ...product, id: newId };
-          // Post the new product to the API (this is a mock API, so it won't actually save the product)
-          const response = await fetch("https://fakestoreapi.com/products", {
+          const { id, ...productWithoutId } = product;
+
+          const payload = {
+            ...productWithoutId,
+            price: Number(product.price) || 0,
+            image: product.image || "",
+            description: product.description || "",
+            category: product.category || "electronics"
+          };
+
+          const response = await fetch(BASE_URL, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newProduct),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
           });
-          if (!response.ok) {
-            throw new Error("Failed to add product");
-          }
+
+          if (!response.ok) throw new Error("Failed to add product");
+
+          const newProduct = await response.json();
+          
           set((state) => ({
             products: [...state.products, newProduct],
             myproducts: [...state.myproducts, newProduct],
           }));
-          // handle error
         } catch (error) {
-          console.error("Error in addProduct:", error);
-          throw new Error("Failed to add product");
+          console.error(error);
         }
       },
+
       removeProduct: async (id) => {
-        // Delete from API
         try {
-          const response = await fetch(
-            `https://fakestoreapi.com/products/${id}`,
-            {
-              method: "DELETE",
-            }
-          );
-          if (!response.ok) {
-            console.error("Error removing product:", response.statusText);
-            throw new Error("Failed to remove product");
-          }
-          // update after deleting
+          const response = await fetch(`${BASE_URL}/${id}`, {
+            method: "DELETE",
+          });
+
+          if (!response.ok) throw new Error("Failed to delete product");
+
           set((state) => ({
-            products: state.products.filter((product) => product.id !== id),
-            myproducts: state.myproducts.filter((product) => product.id !== id),
+            products: state.products.filter((p) => p.id !== id),
+            myproducts: state.myproducts.filter((p) => p.id !== id),
           }));
-          // handle error
         } catch (error) {
-          console.error("Error in removeProduct:", error);
-          throw new Error("Failed to remove product");
+          console.error(error);
         }
       },
     }),
-
     {
       name: "product-store",
     }

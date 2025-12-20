@@ -1,4 +1,5 @@
 import type { FormInputProps } from "@/app/types/Form";
+
 export default function FormInput({
   as,
   name,
@@ -8,49 +9,47 @@ export default function FormInput({
   type,
 }: FormInputProps) {
   const categoryOptions = ["electronics", "clothing", "accessories"];
+
   return (
-    <label className="text-l dark:text-white font-semibold mb-4 text-black">
+    <label className="text-l dark:text-white font-semibold mb-4 text-black block">
       {label !== "productid" ? label : ""}
+      
       {as === "input" && (
-        // Input field for text or number
         <input
           type={type}
           placeholder={label}
-          className="border-b-3 focus:border-b-purple-300 outline-0 border-gray-300 rounded p-2 w-full"
-          {...register(
-            name,
-            type === "number"
-              ? {
-                  setValueAs: (v) => (v === "" ? undefined : parseInt(v, 10)),
-                }
-              : undefined
-          )}
+          step={type === "number" ? "0.01" : undefined} 
+          className="dark:text-white border-b-3 focus:border-b-purple-300 outline-0 border-gray-300 rounded p-2 w-full text-black"
+          {...register(name, {
+  
+            valueAsNumber: type === "number", 
+          })}
         />
       )}
+
       {as === "textarea" && (
-        // Textarea field for multi-line input
         <textarea
           placeholder={label}
           rows={4}
-          className="border-b-3 focus:border-b-purple-300 outline-0 border-gray-300 rounded p-2 w-full"
+          className="dark:placeholder-gray-400 border-b-3 focus:border-b-purple-300 outline-0 border-gray-300 rounded p-2 w-full text-black"
           {...register(name)}
         />
       )}
+
       {as === "select" && (
-        // Select dropdown for category selection
         <select
-          className="border-b-3 focus:border-b-purple-300 outline-0  border-gray-300 rounded p-2 w-full"
+          className="dark:text-white border-b-2 dark:border-b-3 focus:border-b-purple-300 outline-0 border-gray-300 rounded p-2 w-full text-black"
           {...register(name)}
         >
           {categoryOptions.map((option) => (
-            <option key={option} value={option} className="dark:text-black">
+            <option className="dark:text-black dark:bg-white" key={option} value={option}>
               {option.charAt(0).toUpperCase() + option.slice(1)}
             </option>
           ))}
         </select>
       )}
-      {/* Error message */}
-      {error && <span className="text-xs text-red-500">{error.message}</span>}
+
+      {error && <span className="text-xs text-red-500 block mt-1">{error.message}</span>}
     </label>
   );
 }
