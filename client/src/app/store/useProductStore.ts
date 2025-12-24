@@ -40,7 +40,7 @@ export const useProductStore = create<ProductState>()(
       fetchProducts: async () => {
         set({ loading: true });
         try {
-          const response = await fetch(BASE_URL);
+          const response = await fetch(`${BASE_URL}/api/products`);
           if (!response.ok) throw new Error("Failed to fetch products");
           
           const data = await response.json();
@@ -63,7 +63,7 @@ export const useProductStore = create<ProductState>()(
             category: product.category || "electronics"
           };
 
-          const response = await fetch(BASE_URL, {
+          const response = await fetch(`${BASE_URL}/api/products`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
