@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { ProductState } from "../types/Products";
 
-const BASE_URL = "http://localhost:5198/api/products";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5198";
 
 export const useProductStore = create<ProductState>()(
   persist(
