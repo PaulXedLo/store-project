@@ -2,16 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using DreamStore.API;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+                       ?? Environment.GetEnvironmentVariable("DATABASE_URL");
 // setting up the database
 builder.Services.AddDbContext<StoreDb>(options =>
-    options.UseSqlite("Data Source=store.db"));
+    options.UseNpgsql("Data Source=store.db"));
 
 // enabling CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy => 
-        policy.WithOrigins("http://localhost:3000") 
+        policy.WithOrigins("http://localhost:3000", "https://store-project-kappa.vercel.app/") 
               .AllowAnyMethod()
               .AllowAnyHeader());
 });
@@ -83,18 +84,18 @@ app.MapGet("/api/cart", async (StoreDb db) =>
 // POST
 app.MapPost("/api/cart", async (StoreDb db, CartItem item) =>
 {
-    // Verificam daca produsul e deja in cos
+    // checking if product is in cart
     var existingItem = await db.CartItems
         .FirstOrDefaultAsync(c => c.ProductId == item.ProductId);
 
     if (existingItem != null)
     {
-        // Daca exista, crestem cantitatea (+1 sau cat vine)
+        // if it is, add 1
         existingItem.Quantity += item.Quantity;
     }
     else
     {
-        // Daca nu exista, il adaugam nou
+        // if not, add a new one
         db.CartItems.Add(item);
     }
 
