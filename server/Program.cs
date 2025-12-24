@@ -2,18 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using DreamStore.API;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-                       ?? Environment.GetEnvironmentVariable("DATABASE_URL");
+
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") 
+                       ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
 // setting up the database
 builder.Services.AddDbContext<StoreDb>(options =>
-    options.UseNpgsql("Data Source=store.db"));
+    options.UseNpgsql(connectionString));
 
 // enabling CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy => 
-        policy.WithOrigins("http://localhost:3000", "https://store-project-kappa.vercel.app/") 
-              .AllowAnyMethod()
+        policy.WithOrigins("http://localhost:3000", "https://store-project-kappa.vercel.app") 
+              .AllowAnyMethod() 
               .AllowAnyHeader());
 });
 
@@ -113,6 +115,7 @@ app.MapDelete("/api/cart/{id}", async (StoreDb db, int id) =>
     await db.SaveChangesAsync();
     return Results.Ok();
 });
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<StoreDb>();
@@ -122,7 +125,6 @@ using (var scope = app.Services.CreateScope())
 // Running app
 app.Run();
 
-//DATABASE CONTEXT (bridge sqlite)
 class StoreDb : DbContext
 {
     public StoreDb(DbContextOptions<StoreDb> options) : base(options) { }
